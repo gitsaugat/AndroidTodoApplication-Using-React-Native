@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View , Button } from "react-native";
 import * as Location from   "expo-location";
+import UnitsPicker from './components/UnitsPicker';
 import WeatherInfo from './components/WeatherInfo';
 const WEATHER_API_KEY = "4a4b868fe77d5d279e6d0d4ed0f3f7e5"
 const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
@@ -13,7 +14,7 @@ export default function App() {
   
   React.useEffect(()=>{
     load()
-  } , [])
+  } , [unit])
 
  
   async function load (){
@@ -52,6 +53,7 @@ export default function App() {
       return (
         <View style={styles.container}>
           <View style = {styles.main}>
+            <UnitsPicker unit = {unit} setUnit = {setUnit} />
           <WeatherInfo currentWeather = {currentWeather} />
          <StatusBar style="auto" />
           </View>
