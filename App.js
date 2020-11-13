@@ -2,13 +2,14 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View , Button } from "react-native";
 import * as Location from   "expo-location";
+import WeatherInfo from './components/WeatherInfo';
 const WEATHER_API_KEY = "4a4b868fe77d5d279e6d0d4ed0f3f7e5"
-// http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=4a4b868fe77d5d279e6d0d4ed0f3f7e5
 const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
 
 export default function App() {
   const [message  , setErrorMessage] = React.useState(null);
   const [currentWeather ,setcurrentWeather] = React.useState(null);
+  const [unit , setUnit] = React.useState("metric");
   
   React.useEffect(()=>{
     load()
@@ -26,7 +27,7 @@ export default function App() {
 
       const {latitude , longitude}  = location.coords;
 
-      const weather_url = `${BASE_URL}lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}`
+      const weather_url = `${BASE_URL}lat=${latitude}&lon=${longitude}&units=${unit}&appid=${WEATHER_API_KEY}`
       
       const response = await fetch(weather_url)
 
@@ -47,12 +48,15 @@ export default function App() {
   }
 
   if(currentWeather !== null){
-      const {main : {temp}} = currentWeather
+    
       return (
         <View style={styles.container}>
-          
-      <Text>{temp}</Text>
+          <View style = {styles.main}>
+          <WeatherInfo currentWeather = {currentWeather} />
          <StatusBar style="auto" />
+          </View>
+          
+    
         </View>
       );
   }
@@ -69,9 +73,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "#ffff",
     alignItems: "center",
     justifyContent:"center"
   },
+  main : {
+    flex: 1 , 
+    justifyContent : "center"
+  }
  
 });
